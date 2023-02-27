@@ -2,12 +2,12 @@ const isObject = (value) => {
     return value && typeof value === 'object' && value.constructor === Object;
 }
 
-const diff_objects = (obj1, obj2) => {
+const diffObjects = (obj1, obj2) => {
     let result = {};
     for (const key in obj1) {
         if (obj1[key] !== obj2[key] && !areEqualObjects(obj1[key], obj2[key])) {
             if (isObject(obj1[key])) {
-                result[key] = diff_objects(obj1[key], obj2[key]);
+                result[key] = diffObjects(obj1[key], obj2[key]);
             } else {
                 result[key] = obj2[key];
             }
@@ -27,7 +27,7 @@ const isArray = (value) => {
     return value && typeof value === 'object' && value.constructor === Array;
 }
 
-const diff_arrays = (arr1, arr2) => {
+const diffArrays = (arr1, arr2) => {
     let result = [];
     for (let i = 0; i < arr1.length; i++) {
         if (arr1[i] !== arr2[i] && arr2[i] && arr2[i] !== undefined) {
@@ -46,10 +46,10 @@ const diff = (first, second) => {
     for (const key in first) {
         if (!areEqualObjects(first[key], second[key])) {
             if (isObject(first[key])) {
-                result[key] = diff_objects(first[key], second[key]);
+                result[key] = diffObjects(first[key], second[key]);
             }
             else if (isArray(first[key])) {
-                result[key] = diff_arrays(first[key], second[key]);
+                result[key] = diffArrays(first[key], second[key]);
             }
             else {
                 result[key] = second[key];
